@@ -13,7 +13,7 @@
 # ヘッダ追加メソッド
 
 # データ判別メソッド(yyyy/mm/dd)で始まるものをデータにするなど
-# judge_need(regular_expression)
+# judge_need(regexp)
 
 # 要、不要メソッド(0=>true, 1=>false)
 # 必要なものをtrueとして、不要なデータを削る
@@ -25,3 +25,31 @@
 # 開くファイルを指定(input/#{t+2002}.csv)連番を想定
 
 
+# -------------------------------------------------------------------
+# データの書き出し (ヘッダあり)
+# -------------------------------------------------------------------
+# Hash配列の配列のデータの書き出し
+# -------------------------------------------------------------------
+# 引数：file_path 書き出しファイルのPath
+# 引数：data 書き出しデータ
+# 返値：なし
+# 利用：write_csv("output/1.csv",[{"a"=>1,"b"=>2},{"a"=>2,"b"=>3}])
+# -------------------------------------------------------------------
+def write_csv(file_path, data)
+  CSV.open(file_path, "w") do |csv|
+
+    tmp = Array.new
+    data[0].each do |key,val|
+      tmp << key
+    end
+    csv << tmp
+
+    data.each do |out|
+      tmp = Array.new
+      out.each_pair do |key,val|
+        tmp << val
+      end
+    csv << tmp
+    end
+  end
+end
