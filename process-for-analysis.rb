@@ -77,6 +77,55 @@ end
 
 
 # -------------------------------------------------------------------
+# 別カラムのデータ取得メソッド
+# -------------------------------------------------------------------
+# 必要なデータを要素番号で指定して抽出する
+# -------------------------------------------------------------------
+# 引数：Array(Hash)  元データ
+# 引数：Hash  key   参照先のキー => 検索対象
+# 引数：Hash  value 取得するフィールド名 => 新しいフィールド名
+# 引数：String type 追加データのみ->add, 全データ->all
+# 返値：Array(Hash)
+#      [{"a"=>1,"b"=>2,"c"=>3,"d"=>4},{"a"=>3,"b"=>4,"c"=1,"d"=>2}]
+# 利用：reference_field(
+#      [{"a"=>1,"b"=>2,"c"=>3},{"a"=>3,"b"=>4,"c"=>1}],
+#      {"c"=>"a"},{"b"=>"d"})
+# -------------------------------------------------------------------
+def reference_field(data,key,value,type)
+  tmp = Array.new
+  if type == "add"
+  data.each do |d|
+    data.each do |t|
+        key.each_pair do |kk,kv|
+          if d[kk] == t[kv]
+            value.each_pair do |vk,vv|
+              n = Hash.new
+              n[vv] = t[vk]
+              tmp << n
+            end
+          end
+        end
+      end
+    end
+  elsif type == "all"
+    data.each do |d|
+      data.each do |t|
+        key.each_pair do |kk,kv|
+          if d[kk] == t[kv]
+            value.each_pair do |vk,vv|
+              d[vv] = t[vk]
+              tmp << d
+            end
+          end
+        end
+      end
+    end
+  end
+  return tmp
+end
+
+
+# -------------------------------------------------------------------
 # データの結合
 # -------------------------------------------------------------------
 # 要素数は同じHash配列の配列の結合
