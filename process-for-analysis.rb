@@ -41,7 +41,7 @@ def pick_at_number(data,needs)
     i = 0
     tmp = Array.new
     value.each do |v|
-    tmp << v if needs.include?(i)
+      tmp << v if needs.include?(i)
       i = i + 1
     end
     picked << tmp
@@ -93,9 +93,13 @@ end
 # -------------------------------------------------------------------
 def reference_field(data,key,value,type)
   tmp = Array.new
+  # ifの条件分岐の回数を減らすために、この位置で分岐している
   if type == "add"
-  data.each do |d|
-    data.each do |t|
+    data.each do |d|
+      data.each do |t|
+        # 別メソッドを定義したかったが、毎回呼びだすと
+        # 全データを2つ分をコピーすることになるので、
+        # オブジェクト思考に変更するまでは、この書き方にする。
         key.each_pair do |kk,kv|
           if d[kk] == t[kv]
             value.each_pair do |vk,vv|
@@ -168,7 +172,7 @@ def write_csv(file_path, data)
       out.each_pair do |key,val|
         tmp << val
       end
-    csv << tmp
+      csv << tmp
     end
   end
 end
