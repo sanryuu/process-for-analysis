@@ -22,7 +22,7 @@ def pick_at_number(data,needs)
     i = 0
     tmp = Array.new
     value.each do |v|
-    tmp << v if needs.include?(i)
+      tmp << v if needs.include?(i)
       i = i + 1
     end
     picked << tmp
@@ -103,7 +103,7 @@ def write_csv(file_path, data)
       out.each_pair do |key,val|
         tmp << val
       end
-    csv << tmp
+      csv << tmp
     end
   end
 end
