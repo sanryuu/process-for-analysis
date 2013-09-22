@@ -41,7 +41,7 @@ def pick_at_number(data,needs)
     i = 0
     tmp = Array.new
     value.each do |v|
-    tmp << v if needs.include?(i)
+      tmp << v if needs.include?(i)
       i = i + 1
     end
     picked << tmp
@@ -73,6 +73,59 @@ def add_label(data, header)
     added_label << tmp
   end
   return added_label
+end
+
+
+# -------------------------------------------------------------------
+# 別カラムのデータ取得メソッド
+# -------------------------------------------------------------------
+# 必要なデータを要素番号で指定して抽出する
+# -------------------------------------------------------------------
+# 引数：Array(Hash)  元データ
+# 引数：Hash  key   参照先のキー => 検索対象
+# 引数：Hash  value 取得するフィールド名 => 新しいフィールド名
+# 引数：String type 追加データのみ->add, 全データ->all
+# 返値：Array(Hash)
+#      [{"a"=>1,"b"=>2,"c"=>3,"d"=>4},{"a"=>3,"b"=>4,"c"=1,"d"=>2}]
+# 利用：reference_field(
+#      [{"a"=>1,"b"=>2,"c"=>3},{"a"=>3,"b"=>4,"c"=>1}],
+#      {"c"=>"a"},{"b"=>"d"})
+# -------------------------------------------------------------------
+def reference_field(data,key,value,type)
+  tmp = Array.new
+  # ifの条件分岐の回数を減らすために、この位置で分岐している
+  if type == "add"
+    data.each do |d|
+      data.each do |t|
+        # 別メソッドを定義したかったが、毎回呼びだすと
+        # 全データを2つ分をコピーすることになるので、
+        # オブジェクト思考に変更するまでは、この書き方にする。
+        key.each_pair do |kk,kv|
+          if d[kk] == t[kv]
+            value.each_pair do |vk,vv|
+              n = Hash.new
+              n[vv] = t[vk]
+              tmp << n
+            end
+          end
+        end
+      end
+    end
+  elsif type == "all"
+    data.each do |d|
+      data.each do |t|
+        key.each_pair do |kk,kv|
+          if d[kk] == t[kv]
+            value.each_pair do |vk,vv|
+              d[vv] = t[vk]
+              tmp << d
+            end
+          end
+        end
+      end
+    end
+  end
+  return tmp
 end
 
 
@@ -119,7 +172,7 @@ def write_csv(file_path, data)
       out.each_pair do |key,val|
         tmp << val
       end
-    csv << tmp
+      csv << tmp
     end
   end
 end
