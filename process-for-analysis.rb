@@ -111,7 +111,7 @@ end
 #
 # Hash配列の配列のデータの書き出し
 #
-# 利用::write_csv("output/1.csv",[{"a"=>1,"b"=>2},{"a"=>2,"b"=>3}])
+# 利用::write_hash_to_csv("output/1.csv",[{"a"=>1,"b"=>2},{"a"=>2,"b"=>3}])
 # 返値::なし
 #
 # 引数::String file_path 書き出しファイルのPath
