@@ -79,17 +79,46 @@ end
 
 
 #
-#== データの書き出し (ヘッダあり)
+#== データの書き出し
 #
-# Hash配列の配列のデータの書き出し
+# 配列のデータの書き出し
+# Array(Hash),Array(Array)の2種類の配列に対応
 #
 # 利用::write_csv("output/1.csv",[{"a"=>1,"b"=>2},{"a"=>2,"b"=>3}])
+# 利用::write_csv("output/1.csv",[[1,2],[2,3]])
 # 返値::なし
 #
 # 引数::String file_path 書き出しファイルのPath
 # 引数::Array(Hash) data 書き出しデータ
 #
 def write_csv(file_path, data)
+
+  if data.class == Array
+    if data[0].class == Array
+      write_array_to_csv(file_path, data)
+    elsif data[0].class == Hash
+      write_hash_to_csv(file_path, data)
+    else
+      print "対応していない型です。\n"
+    end
+  else
+    print "配列以外の型には対応していません\n"
+  end
+end
+
+#
+#== データの書き出し (ヘッダあり)
+#
+# Hash配列の配列のデータの書き出し
+#
+# 利用::write_hash_to_csv("output/1.csv",[{"a"=>1,"b"=>2},{"a"=>2,"b"=>3}])
+# 返値::なし
+#
+# 引数::String file_path 書き出しファイルのPath
+# 引数::Array(Hash) data 書き出しデータ
+#
+def write_hash_to_csv(file_path, data)
+
   CSV.open(file_path, "w") do |csv|
 
     tmp = Array.new
@@ -104,6 +133,31 @@ def write_csv(file_path, data)
         tmp << val
       end
       csv << tmp
+    end
+  end
+end
+
+#
+#== データの書き出し
+#
+# 配列の配列のデータの書き出し
+#
+# 利用::write_array_to_hash_csv("output/1.csv",[[1,2],[2,3]])
+# 返値::なし
+#
+# 引数::String file_path 書き出しファイルのPath
+# 引数::Array(Hash) data 書き出しデータ
+#
+def write_array_to_csv(file_path, data)
+
+  CSV.open(file_path, "w") do |csv|
+
+    data.each do |out|
+      tmp = Array.new
+      out.each do |val|
+        tmp << val
+      end
+    csv << tmp
     end
   end
 end
