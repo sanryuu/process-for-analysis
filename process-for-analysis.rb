@@ -6,7 +6,7 @@
 # 二重配列とHashの配列の操作を主に行う
 
 #
-#== 指定要素の配列を抽出
+#== 指定要素の配列を抽出(番号指定)
 #
 # 必要なデータを要素番号で指定して抽出する
 #
@@ -24,6 +24,29 @@ def pick_at_number(data,needs)
     value.each do |v|
       tmp << v if needs.include?(i)
       i = i + 1
+    end
+    picked << tmp
+  end
+  return picked
+end
+
+#
+#== 指定要素の配列を抽出(要素名指定)
+#
+# 必要なデータを要素名で指定して抽出する
+#
+# 利用::pick_at_header([{"a"=>1,"b"=>2},{"a"=>2,"b"=>3}],["a"])
+# 返値::Array(Hash)  [{"a"=>1}, {"a"=>2}]
+#
+# 引数::Array(Array) data
+# 引数::Array(int) needs
+#
+def pick_at_header(data,needs)
+  picked = Array.new
+  data.each do |value|
+    tmp = Hash.new
+    value.each_pair do |k,v|
+      tmp[k] = v if needs.include?(k)
     end
     picked << tmp
   end
