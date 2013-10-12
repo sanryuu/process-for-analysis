@@ -186,6 +186,35 @@ def write_array_to_csv(file_path, data)
 end
 
 #
+#== 欠損値埋め
+#
+# 配列の配列、Hash配列の配列における欠損値に対して
+# 指定した値を代入する
+#
+# 利用::fill_in_missing([{a: 2,b: nil},{a: nil, b: 3}],0)
+# 返値::[{:a=>2, :b=>0}, {:a=>0, :b=>3}]
+# 利用::fill_in_missing([[nil,2],[3,nil]],0)
+# 返値::[[0, 2], [3, 0]]
+#
+# 引数::Array(Array) data 加工元データ
+# 引数::Object sub        埋めるデータ
+#
+def fill_in_missing(data, sub)
+
+  if data.class == Array
+    if data[0].class == Array
+      fill_in_array_missing(data,sub)
+    elsif data[0].class == Hash
+      fill_in_hash_missing(data,sub)
+    else
+      print "対応していない型です。\n"
+    end
+  else
+    print "配列以外の型には対応していません\n"
+  end
+end
+
+#
 #== 欠損値埋め(配列)
 #
 # 配列の配列における欠損値に対して指定した値を代入する
