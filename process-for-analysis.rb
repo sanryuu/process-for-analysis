@@ -184,3 +184,31 @@ def write_array_to_csv(file_path, data)
     end
   end
 end
+
+#
+#== 欠損値埋め(配列)
+#
+# 欠損値に対して指定した値を代入する
+#
+# 利用::fill_in_array_missing([[nil,2],[3,nil]],0)
+# 返値::[[0, 2], [3, 0]]
+#
+# 引数::Array(Array) data 加工元データ
+# 引数::Object sub        埋めるデータ
+#
+def fill_in_array_missing(data, sub)
+
+  filled = Array.new
+  data.each do |line|
+    tmp = Array.new
+    line.each do |entity|
+      if entity.nil?
+        tmp << sub
+      else
+        tmp << entity
+      end
+    end
+     filled << tmp
+  end
+  return filled
+end
