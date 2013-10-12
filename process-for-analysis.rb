@@ -188,7 +188,7 @@ end
 #
 #== 欠損値埋め(配列)
 #
-# 欠損値に対して指定した値を代入する
+# 配列の配列における欠損値に対して指定した値を代入する
 #
 # 利用::fill_in_array_missing([[nil,2],[3,nil]],0)
 # 返値::[[0, 2], [3, 0]]
@@ -206,6 +206,35 @@ def fill_in_array_missing(data, sub)
         tmp << sub
       else
         tmp << entity
+      end
+    end
+     filled << tmp
+  end
+  return filled
+end
+
+#
+#== 欠損値埋め(Hash配列)
+#
+# Hash配列の配列における欠損値に対して指定した値を代入する
+#
+# 利用::fill_in_hash_missing([{a: 2,b: nil},{a: nil, b: 3}],0)
+# 返値::{:a=>2, :b=>0}, {:a=>0, :b=>3}]
+#
+# 引数::Array(Hash) data 加工元データ
+# 引数::Object sub        埋めるデータ
+#
+def fill_in_hash_missing(data, sub)
+
+  filled = Array.new
+  data.each do |line|
+    tmp = Hash.new
+    line.each do |key,entity|
+
+      if entity.nil?
+        tmp[key] = sub
+      else
+        tmp[key] = entity
       end
     end
      filled << tmp
