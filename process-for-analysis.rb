@@ -53,6 +53,34 @@ def pick_at_header(data,needs)
   return picked
 end
 
+
+#
+#== 1行目をラベルにする
+#
+# ラベルが1行目に含まれているデータのラベルを
+# 連想配列のキーとして保存
+#
+# 利用::add_label_from_first([["a","b"],[3,4],[5,6]])
+# 返値::Array(Hash) [{"a"=>3, "b"=>4}, {"a"=>5, "b"=>6}]
+#
+# 引数::data Array(Array) ラベルを含む元データ
+#
+def add_label_from_first(data)
+
+  reject_heade = Array.new
+
+  length = data.length
+  for i in 1...length
+    reject_heade << data[i]
+  end
+
+  header = data[0]
+
+  return add_label(reject_heade,header)
+
+end
+
+
 #
 #== ラベル追加メソッド
 #
